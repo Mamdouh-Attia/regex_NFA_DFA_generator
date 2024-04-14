@@ -1,0 +1,14 @@
+digraph {
+	graph [rankdir=LR]
+	"S0,S1,S2,S5,S6,S3,S7," [peripheries=2]
+	"" [shape=none]
+	"" -> "S3,S0,S5,S1,S7,"
+	"S3,S0,S5,S1,S7," [peripheries=2]
+	"S4,S0,S1,S2,S5,S3,S7," [peripheries=2]
+	"S0,S1,S2,S5,S6,S3,S7," -> "S4,S0,S1,S2,S5,S3,S7," [label=a]
+	"S0,S1,S2,S5,S6,S3,S7," -> "S0,S1,S2,S5,S6,S3,S7," [label=b]
+	"S3,S0,S5,S1,S7," -> "S4,S0,S1,S2,S5,S3,S7," [label=a]
+	"S3,S0,S5,S1,S7," -> "S0,S1,S2,S5,S6,S3,S7," [label=b]
+	"S4,S0,S1,S2,S5,S3,S7," -> "S4,S0,S1,S2,S5,S3,S7," [label=a]
+	"S4,S0,S1,S2,S5,S3,S7," -> "S0,S1,S2,S5,S6,S3,S7," [label=b]
+}

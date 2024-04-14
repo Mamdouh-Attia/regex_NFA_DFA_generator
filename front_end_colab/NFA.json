@@ -1,0 +1,37 @@
+{
+"startingState": "S0",
+"S0":{
+"isTerminatingState": False,
+"ε": "S1",
+"ε": "S7"
+},
+"S7":{
+"isTerminatingState": True
+},
+"S1":{
+"isTerminatingState": False,
+"ε": "S3",
+"ε": "S5"
+},
+"S2":{
+"isTerminatingState": False,
+"ε": "S0",
+"ε": "S7"
+},
+"S3":{
+"isTerminatingState": False,
+"a": "S4"
+},
+"S4":{
+"isTerminatingState": False,
+"ε": "S2"
+},
+"S5":{
+"isTerminatingState": False,
+"b": "S6"
+},
+"S6":{
+"isTerminatingState": False,
+"ε": "S2"
+}
+}
