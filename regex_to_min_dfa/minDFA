@@ -1,7 +1,29 @@
 digraph {
 	graph [label=minDFA rankdir=LR]
 	S0
-	S1
-	S0 -> S1 [label=a]
-	S0 -> S1 [label=b]
+	S15
+	S7
+	S0 -> S7 [label=a]
+	S0 -> S7 [label=b]
+	S0 -> S7 [label=c]
+	S0 -> S7 [label=d]
+	S0 -> S7 [label=e]
+	S0 -> S7 [label=_]
+	S0 -> S7 [label=a]
+	S0 -> S7 [label=b]
+	S0 -> S7 [label=c]
+	S0 -> S7 [label=_]
+	S7 -> S7 [label=a]
+	S7 -> S7 [label=b]
+	S7 -> S7 [label=c]
+	S7 -> S7 [label=_]
+	S7 -> S7 [label=a]
+	S7 -> S7 [label=b]
+	S7 -> S7 [label=c]
+	S7 -> S7 [label=0]
+	S7 -> S7 [label=1]
+	S7 -> S7 [label=2]
+	S7 -> S7 [label=3]
+	S7 -> S7 [label=_]
+	S7 -> S15 [label="!"]
 }

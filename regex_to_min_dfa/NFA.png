@@ -1,15 +1,77 @@
 digraph {
 	graph [rankdir=LR]
 	S0
-	S5 [shape=doublecircle]
 	S1
 	S2
 	S3
 	S4
-	S0 -> S1 [label="ε"]
-	S0 -> S3 [label="ε"]
-	S1 -> S2 [label=a]
-	S2 -> S5 [label="ε"]
-	S3 -> S4 [label=b]
-	S4 -> S5 [label="ε"]
+	S5
+	S6
+	S7
+	S8
+	S9
+	S10
+	S11
+	S12
+	S13
+	S14
+	S15
+	S16
+	S17
+	S18
+	S19
+	S20
+	S21
+	S22
+	S23
+	S24
+	S25
+	S26
+	S27
+	S28
+	S29
+	S30
+	S31
+	S32
+	S33 [shape=doublecircle]
+	S0 -> S2 [label="ε"]
+	S1 -> S28 [label="ε"]
+	S2 -> S4 [label="ε"]
+	S2 -> S14 [label="ε"]
+	S3 -> S1 [label="ε"]
+	S3 -> S0 [label="ε"]
+	S4 -> S6 [label="ε"]
+	S4 -> S12 [label="ε"]
+	S5 -> S3 [label="ε"]
+	S6 -> S7 [label=A]
+	S7 -> S8 [label="ε"]
+	S8 -> S9 [label=B]
+	S9 -> S10 [label="ε"]
+	S10 -> S11 [label=E]
+	S11 -> S5 [label="ε"]
+	S12 -> S13 [label=C]
+	S13 -> S5 [label="ε"]
+	S14 -> S16 [label="ε"]
+	S14 -> S15 [label="ε"]
+	S15 -> S3 [label="ε"]
+	S16 -> S18 [label="ε"]
+	S16 -> S24 [label="ε"]
+	S17 -> S26 [label="ε"]
+	S18 -> S20 [label="ε"]
+	S18 -> S22 [label="ε"]
+	S19 -> S17 [label="ε"]
+	S20 -> S21 [label=A]
+	S21 -> S19 [label="ε"]
+	S22 -> S23 [label=B]
+	S23 -> S19 [label="ε"]
+	S24 -> S25 [label=C]
+	S25 -> S17 [label="ε"]
+	S26 -> S27 [label=S]
+	S27 -> S14 [label="ε"]
+	S27 -> S15 [label="ε"]
+	S28 -> S29 [label=A]
+	S29 -> S30 [label="ε"]
+	S30 -> S31 [label=B]
+	S31 -> S32 [label="ε"]
+	S32 -> S33 [label=C]
 }

@@ -20,12 +20,23 @@ class NFA_state:
   '''
     gets the direct neighbours from taking the Character input edge, just the direct neighbours.
   '''
-#   def get_char_closure(self, char) -> set:  # set[SuperState]
-#     closure = set()
-#     for edge in self.out_edges:
-#       if edge.label == char:
-#         closure.add(edge.destination)
-#     return closure
+  def get_char_closure_neighbours_only(self, char) -> set:   
+    closure = set()
+    for edge in self.out_edges:
+      if edge.label == char:
+        closure.add(edge.destination)
+    return closure
+  
+  '''
+    gets the direct neighbours from taking the Character input edge, just the direct neighbours.
+  '''
+  def get_epsilon_closure_neighbours_only(self) -> set:
+    closure = set()
+    for edge in self.out_edges:
+      if edge.label == "ε":
+        closure.add(edge.destination)
+    return closure
+
   
   '''
     Returns a set of States reachable from taking Char edges recursively
@@ -372,7 +383,7 @@ class LowerTriangularMatrix:
               # if the pair does not exist in the matrix
               # or the pair is marked as ∅
               # or the pair is the same, continue
-              if (new_ss1 is None and new_ss2 is None) or (new_ss1.label == new_ss2.label) or (self.get(new_ss1.label, new_ss2.label) == "∅"):
+              if (new_ss1 is None and new_ss2 is None):
                 continue
 
               # if one of the pairs exists and the other does not, mark the current pair as F
@@ -381,6 +392,9 @@ class LowerTriangularMatrix:
                   continue_iterating = True
                   break
 
+              if(new_ss1.label == new_ss2.label) or (self.get(new_ss1.label, new_ss2.label) == "∅"):
+                 continue
+              
               # if the pair is marked as F, mark the current pair as F
               if self.get(new_ss1.label, new_ss2.label) == "F":
                 self.set(pair[0], pair[1], 'F')

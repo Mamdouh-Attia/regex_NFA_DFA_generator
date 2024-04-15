@@ -1,27 +1,159 @@
 {
-"startingState": "S0",
-"S0":{
-"isTerminatingState": False,
-"ε": "S1",
-"ε": "S3"
-},
-"S5":{
-"isTerminatingState": True
-},
-"S1":{
-"isTerminatingState": False,
-"a": "S2"
-},
-"S2":{
-"isTerminatingState": False,
-"ε": "S5"
-},
-"S3":{
-"isTerminatingState": False,
-"b": "S4"
-},
-"S4":{
-"isTerminatingState": False,
-"ε": "S5"
-}
+      "starting_state": "S0",
+      "S0": {
+            "is_terminating_state": false,
+            "ε": "S2"
+      },
+      "S1": {
+            "is_terminating_state": false,
+            "ε": "S28"
+      },
+      "S2": {
+            "is_terminating_state": false,
+            "ε": [
+                  "S4",
+                  "S14"
+            ]
+      },
+      "S3": {
+            "is_terminating_state": false,
+            "ε": [
+                  "S1",
+                  "S0"
+            ]
+      },
+      "S4": {
+            "is_terminating_state": false,
+            "ε": [
+                  "S6",
+                  "S12"
+            ]
+      },
+      "S5": {
+            "is_terminating_state": false,
+            "ε": "S3"
+      },
+      "S6": {
+            "is_terminating_state": false,
+            "A": "S7"
+      },
+      "S7": {
+            "is_terminating_state": false,
+            "ε": "S8"
+      },
+      "S8": {
+            "is_terminating_state": false,
+            "B": "S9"
+      },
+      "S9": {
+            "is_terminating_state": false,
+            "ε": "S10"
+      },
+      "S10": {
+            "is_terminating_state": false,
+            "E": "S11"
+      },
+      "S11": {
+            "is_terminating_state": false,
+            "ε": "S5"
+      },
+      "S12": {
+            "is_terminating_state": false,
+            "C": "S13"
+      },
+      "S13": {
+            "is_terminating_state": false,
+            "ε": "S5"
+      },
+      "S14": {
+            "is_terminating_state": false,
+            "ε": [
+                  "S16",
+                  "S15"
+            ]
+      },
+      "S15": {
+            "is_terminating_state": false,
+            "ε": "S3"
+      },
+      "S16": {
+            "is_terminating_state": false,
+            "ε": [
+                  "S18",
+                  "S24"
+            ]
+      },
+      "S17": {
+            "is_terminating_state": false,
+            "ε": "S26"
+      },
+      "S18": {
+            "is_terminating_state": false,
+            "ε": [
+                  "S20",
+                  "S22"
+            ]
+      },
+      "S19": {
+            "is_terminating_state": false,
+            "ε": "S17"
+      },
+      "S20": {
+            "is_terminating_state": false,
+            "A": "S21"
+      },
+      "S21": {
+            "is_terminating_state": false,
+            "ε": "S19"
+      },
+      "S22": {
+            "is_terminating_state": false,
+            "B": "S23"
+      },
+      "S23": {
+            "is_terminating_state": false,
+            "ε": "S19"
+      },
+      "S24": {
+            "is_terminating_state": false,
+            "C": "S25"
+      },
+      "S25": {
+            "is_terminating_state": false,
+            "ε": "S17"
+      },
+      "S26": {
+            "is_terminating_state": false,
+            "S": "S27"
+      },
+      "S27": {
+            "is_terminating_state": false,
+            "ε": [
+                  "S14",
+                  "S15"
+            ]
+      },
+      "S28": {
+            "is_terminating_state": false,
+            "A": "S29"
+      },
+      "S29": {
+            "is_terminating_state": false,
+            "ε": "S30"
+      },
+      "S30": {
+            "is_terminating_state": false,
+            "B": "S31"
+      },
+      "S31": {
+            "is_terminating_state": false,
+            "ε": "S32"
+      },
+      "S32": {
+            "is_terminating_state": false,
+            "C": "S33"
+      },
+      "S33": {
+            "is_terminating_state": true
+      }
 }
