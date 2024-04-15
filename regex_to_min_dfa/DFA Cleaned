@@ -1,0 +1,10 @@
+digraph {
+	graph [label="DFA Cleaned" rankdir=LR]
+	S2 [peripheries=2]
+	S1 [peripheries=2]
+	"" [shape=none]
+	"" -> S0
+	S0
+	S0 -> S1 [label=a]
+	S0 -> S2 [label=b]
+}

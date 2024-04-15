@@ -1,10 +1,10 @@
 digraph {
-	graph [label=DFA rankdir=LR]
-	S0 [peripheries=2]
-	S0 -> S0 [label=a]
-	S0 -> S0 [label=b]
-	S0 -> S0 [label=a]
-	S0 -> S0 [label=b]
-	S0 -> S0 [label=a]
-	S0 -> S0 [label=b]
+	graph [rankdir=LR]
+	"S5,S4," [peripheries=2]
+	"S2,S5," [peripheries=2]
+	"" [shape=none]
+	"" -> "S1,S3,S0,"
+	"S1,S3,S0,"
+	"S1,S3,S0," -> "S2,S5," [label=a]
+	"S1,S3,S0," -> "S5,S4," [label=b]
 }
