@@ -10,6 +10,15 @@ class edge:
       def __str__(self):
         return f"edge {self.label} going to {self.destination}"
       
+      def __eq__(self, other: object) -> bool:
+        return self.label == other.label and self.destination == other.destination
+      
+      def __ne__(self, other: object) -> bool:
+        return self.label != other.label or self.destination != other.destination
+
+      def __hash__(self) -> int:
+        return hash(self.label + self.destination.label)
+      
 ############################################################################################
 class NFA_state:
   
@@ -20,35 +29,65 @@ class NFA_state:
   '''
     gets the direct neighbours from taking the Character input edge, just the direct neighbours.
   '''
-#   def get_char_closure(self, char) -> set:  # set[SuperState]
-#     closure = set()
-#     for edge in self.out_edges:
-#       if edge.label == char:
-#         closure.add(edge.destination)
-#     return closure
+  def get_char_closure_neighbours_only(self, char) -> set:   
+    closure = set()
+    for edge in self.out_edges:
+      if edge.label == char:
+        closure.add(edge.destination)
+    return closure
+  
+  '''
+    gets the direct neighbours from taking the Character input edge, just the direct neighbours.
+  '''
+  def get_epsilon_closure_neighbours_only(self) -> set:
+    closure = set()
+    for edge in self.out_edges:
+      if edge.label == "ε":
+        closure.add(edge.destination)
+    return closure
+
   
   '''
     Returns a set of States reachable from taking Char edges recursively
   '''
   def get_char_closure(self, char) -> set:  # set[SuperState]
     reachable_states = set()
-    for edge in self.out_edges:
-      if edge.label == char:
-        reachable_states.add(edge.destination)
-        reachable_states = reachable_states.union(edge.destination.get_char_closure(char))
+    unchecked_states = set()
+    unchecked_states.add(self)
+    while(unchecked_states):
+        to_be_checked = unchecked_states.copy()
+        for s in to_be_checked:
+            reachable_states.update(s.get_char_closure_neighbours_only(char))
+            unchecked_states.update(s.get_char_closure_neighbours_only(char))
+            unchecked_states.remove(s)
+    
     return reachable_states
   
   '''
     Returns a set of States reachable from taking Epsilon edges recursively
   '''
   def get_epsilon_closure(self) -> set:  # set[SuperState]
-    epsilon_closure = set()
-    epsilon_closure.add(self)
-    for edge in self.out_edges:
-      if edge.label == "ε":
-        epsilon_closure.add(edge.destination)
-        epsilon_closure = epsilon_closure.union(edge.destination.get_epsilon_closure())
-    return epsilon_closure
+    reachable_states = set()
+    reachable_states.add(self)
+    unchecked_states = set()
+    unchecked_states.add(self)
+    checked_states = set() 
+    
+    # To make sure that there is no eps cycles
+    countdown = 4
+    
+    while(unchecked_states != set() and countdown):
+        to_be_checked = unchecked_states.copy()
+        prev_checked = checked_states.copy()
+        for s in to_be_checked:
+            reachable_states.update(s.get_epsilon_closure_neighbours_only())
+            unchecked_states.update(s.get_epsilon_closure_neighbours_only())
+            unchecked_states.remove(s)
+            checked_states.add(s)
+        if(prev_checked == checked_states):
+          countdown -= 1
+    #print(reachable_states)
+    return reachable_states
 
   def __str__(self) -> str:
     return self.label
@@ -139,6 +178,12 @@ class SuperState:
     for s in self.sub_states:
       labels.append(s.label)
     return labels
+  
+  def get_destination(self, char):
+     for edge in self.out_edges:
+        if edge.label == char:
+           return edge.destination
+     return None
     
 
   def generate_new_superstate(self, char):
@@ -163,6 +208,10 @@ class SuperState:
       set_of_src_labels.add(s.label)
     for s in other.sub_states:
       set_of_dst_labels.add(s.label)
+
+    if not set_of_src_labels and not set_of_dst_labels:
+      return self.label == other.label
+
     return set_of_src_labels == set_of_dst_labels
   
   def __ne__(self, other):
@@ -172,6 +221,10 @@ class SuperState:
       set_of_src_labels.add(s.label)
     for s in other.sub_states:
       set_of_dst_labels.add(s.label)
+    
+    if not set_of_src_labels and not set_of_dst_labels:
+      return self.label != other.label
+    
     return set_of_src_labels != set_of_dst_labels
 
   def __str__(self):
@@ -204,28 +257,21 @@ class SuperState:
 ############################################################################################
 
 class DFA:
-    ''' A DFA object contains a set of SuperStates, also a pointer to the starting SuperState and a set of the accept SuperState'''
-    def __init__(self):
-        self.start_super_state: SuperState = None          
-        self.super_states: set[SuperState] = set() 
-        self.accept_super_states: set[SuperState] = set()
-
     
-                      
-
-    '''Just makes a new empty DFA, and a legit SuperState then insert this initial SuperState into the Empty DFA then return the DFA'''
-    def __init__(self, nfa: NFA):
-      self.start_super_state = SuperState()
-      self.start_super_state.is_start = True
-      self.start_super_state.label = "S0"
-      
-      self.start_super_state.sub_states = nfa.start.get_epsilon_closure()
-      self.start_super_state.out_edges = []
-      
-      self.super_states = set()
-      self.super_states.add(self.start_super_state)
-
-      self.accept_super_states = set()
+    ''' A DFA object contains a set of SuperStates, also a pointer to the starting SuperState and a set of the accept SuperState'''
+    def __init__(self, nfa: NFA = None):
+        if nfa is None:
+            self.start_super_state: SuperState = SuperState()          
+            self.super_states: set[SuperState] = set() 
+            self.accept_super_states: set[SuperState] = set()
+        else:
+            self.start_super_state = SuperState()
+            self.start_super_state.is_start = True
+            self.start_super_state.label = "S0"
+            self.start_super_state.sub_states = nfa.start.get_epsilon_closure()
+            self.start_super_state.out_edges = []
+            self.super_states = {self.start_super_state}
+            self.accept_super_states = set()
 
       
     '''takes a list of states, returns the matching SuperState if the list already'''
@@ -233,6 +279,19 @@ class DFA:
       for ss in self.super_states:
         if ss == super_state:
           return ss
+      return None
+    
+    def get_accept_states(self):
+       return self.accept_super_states
+    
+    def get_non_accept_states(self):
+       return self.super_states.difference(self.accept_super_states)
+    
+    def get_super_state_from_label(self, label):
+      for ss in self.super_states:
+          if ss.label == label:
+             return ss
+          
       return None
 
     def __eq__(self, other):
@@ -250,51 +309,139 @@ class DFA:
     def visualize_normal(self):
         gra = Digraph(graph_attr={'rankdir':'LR'})
         id = 0
-        for SSTT in self.super_states:
-            if(SSTT.is_start):
+        for ss in self.super_states:
+            if(ss.is_start):
                 gra.node("", _attributes={'shape' : 'none'})
-                gra.edge("", repr(SSTT))
-            if(SSTT.is_end):
-                gra.node(repr(SSTT), _attributes={'peripheries' : '2'})
+                gra.edge("", repr(ss))
+            if(ss.is_end):
+                gra.node(repr(ss), _attributes={'peripheries' : '2'})
             else:
-                gra.node(repr(SSTT))
+                gra.node(repr(ss))
                 id = id + 1
                 
 
-        for SSTT in self.super_states:
+        for ss in self.super_states:
             labelsOfSource = ""
-            for stt in SSTT.sub_states:
+            for stt in ss.sub_states:
                 labelsOfSource = labelsOfSource + stt.label + " , "
 
             
-            for edg in SSTT.out_edges:
-                gra.edge(repr(SSTT) , repr(edg.destination), label=edg.label)
+            for edg in ss.out_edges:
+                gra.edge(repr(ss) , repr(edg.destination), label=edg.label)
 
         gra.format = 'png'
         gra.render('DFA', view=True)
         return gra.source
 
-    def visualize_cleaned(self):
-      gra = Digraph(graph_attr={'rankdir':'LR', "label":"DFA"})
-      id = 0
-      for SSTT in self.super_states:
-        if(SSTT.is_start):
+    def visualize(self, graph_label):
+      gra = Digraph(graph_attr={'rankdir':'LR', "label":f"{graph_label}"})
+      for ss in self.super_states:
+        if(ss.is_start):
           gra.node("", _attributes={'shape' : 'none'})
-          gra.edge("", SSTT.label)
-        if(SSTT.is_end):
-          gra.node(SSTT.label, _attributes={'peripheries' : '2'})
+          gra.edge("", ss.label)
+        if(ss.is_end):
+          gra.node(ss.label, _attributes={'peripheries' : '2'})
         else:
-          gra.node(SSTT.label)
-        id = id + 1
+          gra.node(ss.label)
         
-      for SSTT in self.super_states:
-        for edg in SSTT.out_edges:
-          gra.edge(SSTT.label , edg.destination.label, label=edg.label)
+      for ss in self.super_states:
+        for edg in ss.out_edges:
+          gra.edge(ss.label , edg.destination.label, label=edg.label)
 
       gra.format = 'png'
-      gra.render('DFA', view= True)
+      gra.render(f"{graph_label}", view= True)
+      return gra.source
+    
+
+    def visualize_min_DFA (self):
+      gra = Digraph(graph_attr={'rankdir':'LR', "label":"minimized DFA"})
+      
+      for ss in self.super_states:
+        if(ss.is_start):
+          gra.node("", _attributes={'shape' : 'none'})
+          gra.edge("", ss.label)
+        if(ss.is_end):
+          gra.node(ss.label, _attributes={'peripheries' : '2'})
+        else:
+          gra.node(ss.label)
+        
+      for ss in self.super_states:
+        for edg in ss.out_edges:
+          gra.edge(ss.label , edg.destination, label=edg.label)
+      gra.format = 'png'
+      gra.render('minDFA', view=True)
       return gra.source
     
 
 
 
+############################################################################################
+
+class LowerTriangularMatrix:
+   
+  def __init__(self, size):
+      self.size = size
+      self.pairs = dict()
+      for i in range(1, size):
+         for j in range(i):
+            new_pair = ("S"+str(i), "S"+str(j))
+            self.pairs[tuple(sorted(new_pair))] = "∅"
+
+  def fill_with_dfa(self, dfa: DFA):
+    accept_states = dfa.get_accept_states()
+    non_accept_states = dfa.get_non_accept_states()
+
+    for ac_ss in accept_states:
+        for non_ac_ss in non_accept_states:
+          self.set(ac_ss.label, non_ac_ss.label, 'F')
+
+
+  def iterate_to_min_dfa(self, dfa: DFA, input_chars: str):
+    continue_iterating = True
+    while continue_iterating:
+      continue_iterating = False
+      for pair in self.pairs.keys():
+        if self.get(pair[0], pair[1]) == "∅":
+            for char in input_chars:
+
+              # get the destination of the current pair
+              new_ss1 = dfa.get_super_state_from_label(pair[0]).get_destination(char)
+              new_ss2 = dfa.get_super_state_from_label(pair[1]).get_destination(char)
+              
+              # if the pair does not exist in the matrix
+              # or the pair is marked as ∅
+              # or the pair is the same, continue
+              if (new_ss1 is None and new_ss2 is None):
+                continue
+
+              # if one of the pairs exists and the other does not, mark the current pair as F
+              if (new_ss1 is None) != (new_ss2 is None):
+                  self.set(pair[0], pair[1], 'F')
+                  continue_iterating = True
+                  break
+
+              if(new_ss1.label == new_ss2.label) or (self.get(new_ss1.label, new_ss2.label) == "∅"):
+                 continue
+              
+              # if the pair is marked as F, mark the current pair as F
+              if self.get(new_ss1.label, new_ss2.label) == "F":
+                self.set(pair[0], pair[1], 'F')
+                continue_iterating = True
+                break
+          
+
+
+
+  def get(self, i, j):
+      return self.pairs[tuple(sorted((i, j)))]
+  
+  def set(self, i, j, value):
+      self.pairs[tuple(sorted((i, j)))] = value
+
+  def __str__(self):
+      stringy = ""
+      for i in range(1, self.size):
+        for j in range(i):
+          stringy = stringy + self.get(i, j) + " "
+        stringy = stringy + "\n"
+      return stringy
