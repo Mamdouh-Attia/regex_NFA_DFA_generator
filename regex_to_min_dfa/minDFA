@@ -1,0 +1,10 @@
+digraph {
+	graph [label=minDFA rankdir=LR]
+	S0
+	S0 -> S0 [label=a]
+	S0 -> S0 [label=b]
+	S0 -> S0 [label=a]
+	S0 -> S0 [label=b]
+	S0 -> S0 [label=a]
+	S0 -> S0 [label=b]
+}
