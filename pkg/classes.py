@@ -169,6 +169,10 @@ class SuperState:
       set_of_src_labels.add(s.label)
     for s in other.sub_states:
       set_of_dst_labels.add(s.label)
+
+    if not set_of_src_labels and not set_of_dst_labels:
+      return self.label == other.label
+
     return set_of_src_labels == set_of_dst_labels
   
   def __ne__(self, other):
@@ -178,6 +182,10 @@ class SuperState:
       set_of_src_labels.add(s.label)
     for s in other.sub_states:
       set_of_dst_labels.add(s.label)
+    
+    if not set_of_src_labels and not set_of_dst_labels:
+      return self.label != other.label
+    
     return set_of_src_labels != set_of_dst_labels
 
   def __str__(self):

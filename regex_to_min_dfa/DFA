@@ -1,10 +1,10 @@
 digraph {
 	graph [rankdir=LR]
-	"S5,S4," [peripheries=2]
 	"S2,S5," [peripheries=2]
+	"S5,S4," [peripheries=2]
 	"" [shape=none]
-	"" -> "S1,S3,S0,"
-	"S1,S3,S0,"
-	"S1,S3,S0," -> "S2,S5," [label=a]
-	"S1,S3,S0," -> "S5,S4," [label=b]
+	"" -> "S3,S0,S1,"
+	"S3,S0,S1,"
+	"S3,S0,S1," -> "S2,S5," [label=a]
+	"S3,S0,S1," -> "S5,S4," [label=b]
 }

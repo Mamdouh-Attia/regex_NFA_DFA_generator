@@ -1,7 +1,7 @@
 digraph {
 	graph [label="DFA Cleaned" rankdir=LR]
-	S2 [peripheries=2]
 	S1 [peripheries=2]
+	S2 [peripheries=2]
 	"" [shape=none]
 	"" -> S0
 	S0

@@ -1,4 +1,7 @@
 digraph {
 	graph [label=minDFA rankdir=LR]
 	S0
+	S1
+	S0 -> S1 [label=a]
+	S0 -> S1 [label=b]
 }
