@@ -10,6 +10,15 @@ class edge:
       def __str__(self):
         return f"edge {self.label} going to {self.destination}"
       
+      def __eq__(self, other: object) -> bool:
+        return self.label == other.label and self.destination == other.destination
+      
+      def __ne__(self, other: object) -> bool:
+        return self.label != other.label or self.destination != other.destination
+
+      def __hash__(self) -> int:
+        return hash(self.label + self.destination.label)
+      
 ############################################################################################
 class NFA_state:
   
@@ -43,23 +52,42 @@ class NFA_state:
   '''
   def get_char_closure(self, char) -> set:  # set[SuperState]
     reachable_states = set()
-    for edge in self.out_edges:
-      if edge.label == char:
-        reachable_states.add(edge.destination)
-        reachable_states = reachable_states.union(edge.destination.get_char_closure(char))
+    unchecked_states = set()
+    unchecked_states.add(self)
+    while(unchecked_states):
+        to_be_checked = unchecked_states.copy()
+        for s in to_be_checked:
+            reachable_states.update(s.get_char_closure_neighbours_only(char))
+            unchecked_states.update(s.get_char_closure_neighbours_only(char))
+            unchecked_states.remove(s)
+    
     return reachable_states
   
   '''
     Returns a set of States reachable from taking Epsilon edges recursively
   '''
   def get_epsilon_closure(self) -> set:  # set[SuperState]
-    epsilon_closure = set()
-    epsilon_closure.add(self)
-    for edge in self.out_edges:
-      if edge.label == "ε":
-        epsilon_closure.add(edge.destination)
-        epsilon_closure = epsilon_closure.union(edge.destination.get_epsilon_closure())
-    return epsilon_closure
+    reachable_states = set()
+    reachable_states.add(self)
+    unchecked_states = set()
+    unchecked_states.add(self)
+    checked_states = set() 
+    
+    # To make sure that there is no eps cycles
+    countdown = 4
+    
+    while(unchecked_states != set() and countdown):
+        to_be_checked = unchecked_states.copy()
+        prev_checked = checked_states.copy()
+        for s in to_be_checked:
+            reachable_states.update(s.get_epsilon_closure_neighbours_only())
+            unchecked_states.update(s.get_epsilon_closure_neighbours_only())
+            unchecked_states.remove(s)
+            checked_states.add(s)
+        if(prev_checked == checked_states):
+          countdown -= 1
+    #print(reachable_states)
+    return reachable_states
 
   def __str__(self) -> str:
     return self.label

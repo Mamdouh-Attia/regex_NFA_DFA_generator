@@ -1,50 +1,26 @@
 {
+      "S5": {
+            "is_terminating_state": true,
+            "B": "S4",
+            "A": "S3"
+      },
+      "S1": {
+            "is_terminating_state": false,
+            "B": "S4"
+      },
+      "S3": {
+            "is_terminating_state": false,
+            "B": "S5",
+            "A": "S3"
+      },
+      "S4": {
+            "is_terminating_state": false,
+            "B": "S4",
+            "A": "S3"
+      },
+      "starting_state": "S0",
       "S0": {
             "is_terminating_state": false,
-            "a": [
-                  "S7",
-                  "S7"
-            ],
-            "b": [
-                  "S7",
-                  "S7"
-            ],
-            "c": [
-                  "S7",
-                  "S7"
-            ],
-            "d": "S7",
-            "e": "S7",
-            "_": [
-                  "S7",
-                  "S7"
-            ]
-      },
-      "S15": {
-            "is_terminating_state": false
-      },
-      "S7": {
-            "is_terminating_state": false,
-            "a": [
-                  "S7",
-                  "S7"
-            ],
-            "b": [
-                  "S7",
-                  "S7"
-            ],
-            "c": [
-                  "S7",
-                  "S7"
-            ],
-            "_": [
-                  "S7",
-                  "S7"
-            ],
-            "0": "S7",
-            "1": "S7",
-            "2": "S7",
-            "3": "S7",
-            "!": "S15"
+            "A": "S1"
       }
 }
